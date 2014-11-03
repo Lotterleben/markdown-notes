@@ -25,6 +25,7 @@ The `notes.[which-config-file-format?]` will be the main configuration file. No 
 The `notes/` folder would contain all notes managed by the utility, which would provide a couple of convenience functionality for managing them, such as (assuming that the command line app is called "`notes`"):
 
 * Creating new notes with `notes new [optional name]`, with a current timestamp based on some template (TODO). They are stored in `notes/` and an editor is opened for the newly created file.
+* Adding existing files to the notes repository. If it's a markdown file (TODO: How to detect?) it is categorized as a note and stored in `notes/`. If not, it is categorized as an asset and stored in `assets/` (see "Storing files"), and a dedicated note for that document is created, containing metadata and possibly notes for the file. Said note is opened in the editor.
 * Synchronizing your notes repository with a remote server using `notes sync [optional sync target]`.
     * There could be different synchronization providers, e.g. git-over-ssh, ftp or whatever. I guess we'd just start with a pure git-based thing?
     * Sync targets are configured in the config file.
@@ -94,6 +95,32 @@ We'd probably want to follow the syntax of MultiMarkdown here, as it seems to ma
 * https://pythonhosted.org/Markdown/extensions/meta_data.html
 * http://hiltmon.com/blog/2012/06/18/markdown-metadata/
 * https://github.com/fletcher/MultiMarkdown/wiki/MultiMarkdown-Syntax-Guide
+
+
+
+## Storing files
+
+In order to be really useful, it'd be desirable for this system to be able to store other filetypes as well, including images, PDF documents, etc.
+
+These files would then be stored in a separate directory `assets/` next to notes. The original filename is _not_ preserved, but replaced by a SHA256 hash of the file (not the name, but it's contents). Apart from avoiding filename collision this has the benefit that it detects duplicate files.
+
+For every file inside assets, there'd be a markdown file containing metadata for the file, e.g.
+
+    Filename: foo.pdf
+    Title: Awesome paper
+    Authors: Foo et al.
+    Published: 2014-04-13
+    Hash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    Extension: pdf
+    Mimetype: application/pdf
+    Tags: foo, awesome, bar
+
+    After the metadata block, notes for the file can be added.
+
+Adding a new file would be achieved through the `notes add [path to file]` as outlined above.
+
+* Some/much of the organization functionality contained in Mendeley might be desirable?
+
 
 
 
