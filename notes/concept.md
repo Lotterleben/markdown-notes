@@ -22,13 +22,31 @@ The directory structure managed by the utility would look something like this:
 
 The `notes.[which-config-file-format?]` will be the main configuration file. No file format has been decided yet, but it should be simple and above all human readable.
 
-The `notes/` folder would contain all notes managed by the utility, which would provide a couple of convenience functionality for managing them, such as (assuming that the command line app is called "`notes`"):
+The `notes/` folder would contain all notes managed by the utility
 
-* Creating new notes with `notes new [optional name]`, with a current timestamp based on some template (TODO). They are stored in `notes/` and an editor is opened for the newly created file.
-* Adding existing files to the notes repository. If it's a markdown file (TODO: How to detect?) it is categorized as a note and stored in `notes/`. If not, it is categorized as an asset and stored in `assets/` (see "Storing files"), and a dedicated note for that document is created, containing metadata and possibly notes for the file. Said note is opened in the editor.
-* Synchronizing your notes repository with a remote server using `notes sync [optional sync target]`.
+
+## The utility
+
+The central utility/command-line tool would provide a couple of convenience functionality for managing them, such as (assuming that the command line app is called "`notes`"):
+
+* Creating new notes
+* Adding existing files to the notes repository
+* Synchronizing your notes repository with a remote server.
     * There could be different synchronization providers, e.g. git-over-ssh, ftp or whatever. I guess we'd just start with a pure git-based thing?
     * Sync targets are configured in the config file.
+
+
+### Possible set of commands
+
+* `notes new [optional name]` creates a new file
+* `notes sync [optional sync target]` would synchronize your repository with the configured remote.
+* Incomplete!
+* `notes add [path to file]` adds an already existing file to the repository.
+
+### File handling
+
+* Creating a new file: with current timestamp based on some template (TODO), e.g. "year-month-day-hour-minute-name". They are stored in `notes/` and an editor is opened for the newly created file.
+* Adding an existing file: If it's a markdown file (TODO: How to detect?) it is categorized as a note and stored in `notes/`. If not, it is categorized as an asset and stored in `assets/` (see "Storing files"), and a dedicated note for that document is created, containing metadata and possibly notes for the file. Said note is opened in the editor.
 
 
 ## Plugins
@@ -60,9 +78,7 @@ The core utility would try to do as little as possible and all other functionali
 
     As a second step, it might be possible to chain these to create a tag-based hierachy inside a date-based one and so on.
 
-* Presentation plugins: In order to be really useful, proper visualization and searching of notes is required. These tasks would be performed by presentation plugins. In the first step this could be a simple web-interface which allows searching notes through elastic search.
-
-* Synchronization plugins: How to get your stuff onto the interwebs and back. TODO: details.
+* Synchronization plugins: How to get your stuff onto the interwebs and back. Initially, this will be done through a plain git reposito
 
 
 
@@ -117,14 +133,25 @@ For every file inside assets, there'd be a markdown file containing metadata for
 
     After the metadata block, notes for the file can be added.
 
-Adding a new file would be achieved through the `notes add [path to file]` as outlined above.
-
-* Some/much of the organization functionality contained in Mendeley might be desirable?
 
 
+## Frontend
+
+In order to be really useful, proper visualization and searching of notes is required. These tasks would be performed by presentation front-ends. In the first step this could be a simple web-interface which allows searching notes through elastic search.
+
+Architecturally, the interface between the frontend and the backend should happen via the `notes` command and not by reading files directly. By using the command as a facade, any properties of the actual notes repository could be changed without affecting frontend representation.
 
 
-## Open questions
+
+## Open questions / TODOs
+
+### Backend
 
 * How will this work on the mobiles and so on?
 * How to link to other notes
+* Better separate UX/UI ideas from implementation details
+
+
+### Frontend
+
+* Some/much of the organization functionality contained in Mendeley might be desirable?
