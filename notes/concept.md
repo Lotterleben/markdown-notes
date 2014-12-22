@@ -29,8 +29,16 @@ The `notes/` folder would contain all notes managed by the utility
 
 The central utility/command-line tool would provide a couple of convenience functionality for managing them, such as (assuming that the command line app is called "`notes`"):
 
-* Creating new notes
-* Adding existing files to the notes repository
+### core
+1. file storage
+	* Creating new notes
+	* Adding existing files to the notes repository
+	* (internally) managing symlinks between files in meaningful folder structure and their original files piled up in the noted folder
+	* adding new Files (as attachments for .md files)
+	* add & manage metadata for non-.md files
+2. searching for notes and/or specific note content
+
+### hopefully soon
 * Synchronizing your notes repository with a remote server.
     * There could be different synchronization providers, e.g. git-over-ssh, ftp or whatever. I guess we'd just start with a pure git-based thing?
     * Sync targets are configured in the config file.
@@ -42,6 +50,7 @@ The central utility/command-line tool would provide a couple of convenience func
 * `notes sync [optional sync target]` would synchronize your repository with the configured remote.
 * Incomplete!
 * `notes add [path to file]` adds an already existing file to the repository.
+* `??` add new non-.md file to repository
 
 ### File handling
 
